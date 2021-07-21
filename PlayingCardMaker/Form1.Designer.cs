@@ -49,6 +49,9 @@ namespace PlayingCardMaker
             this.CSVLabel = new System.Windows.Forms.Label();
             this.SeperateFilesCheck = new System.Windows.Forms.CheckBox();
             this.CreateCardsButton = new System.Windows.Forms.Button();
+            this.CreateMessageLabel = new System.Windows.Forms.Label();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.LoadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.CardImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XPosition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YPosition)).BeginInit();
@@ -87,7 +90,6 @@ namespace PlayingCardMaker
             this.BackgroundLabel.Name = "BackgroundLabel";
             this.BackgroundLabel.Size = new System.Drawing.Size(152, 13);
             this.BackgroundLabel.TabIndex = 2;
-            this.BackgroundLabel.Text = "background.png";
             this.BackgroundLabel.Click += new System.EventHandler(this.BackgroundLabel_Click);
             // 
             // AddTextButton
@@ -227,7 +229,6 @@ namespace PlayingCardMaker
             this.CSVLabel.Name = "CSVLabel";
             this.CSVLabel.Size = new System.Drawing.Size(152, 13);
             this.CSVLabel.TabIndex = 15;
-            this.CSVLabel.Text = "parameters.csv";
             // 
             // SeperateFilesCheck
             // 
@@ -249,12 +250,43 @@ namespace PlayingCardMaker
             this.CreateCardsButton.UseVisualStyleBackColor = true;
             this.CreateCardsButton.Click += new System.EventHandler(this.CreateCardsButton_Click);
             // 
+            // CreateMessageLabel
+            // 
+            this.CreateMessageLabel.AutoSize = true;
+            this.CreateMessageLabel.Location = new System.Drawing.Point(778, 610);
+            this.CreateMessageLabel.Name = "CreateMessageLabel";
+            this.CreateMessageLabel.Size = new System.Drawing.Size(0, 13);
+            this.CreateMessageLabel.TabIndex = 18;
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(13, 610);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(93, 24);
+            this.SaveButton.TabIndex = 19;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // LoadButton
+            // 
+            this.LoadButton.Location = new System.Drawing.Point(118, 610);
+            this.LoadButton.Name = "LoadButton";
+            this.LoadButton.Size = new System.Drawing.Size(93, 24);
+            this.LoadButton.TabIndex = 20;
+            this.LoadButton.Text = "Load";
+            this.LoadButton.UseVisualStyleBackColor = true;
+            this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.ClientSize = new System.Drawing.Size(937, 640);
+            this.Controls.Add(this.LoadButton);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.CreateMessageLabel);
             this.Controls.Add(this.CreateCardsButton);
             this.Controls.Add(this.SeperateFilesCheck);
             this.Controls.Add(this.CSVLabel);
@@ -308,6 +340,9 @@ namespace PlayingCardMaker
         private System.Windows.Forms.Label CSVLabel;
         private System.Windows.Forms.CheckBox SeperateFilesCheck;
         private System.Windows.Forms.Button CreateCardsButton;
+        private System.Windows.Forms.Label CreateMessageLabel;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button LoadButton;
     }
 }
 
