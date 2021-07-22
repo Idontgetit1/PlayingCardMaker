@@ -31,7 +31,6 @@ namespace PlayingCardMaker
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.CardImage = new System.Windows.Forms.PictureBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.AddBackgroundButton = new System.Windows.Forms.Button();
             this.BackgroundLabel = new System.Windows.Forms.Label();
             this.AddTextButton = new System.Windows.Forms.Button();
@@ -58,6 +57,8 @@ namespace PlayingCardMaker
             this.WidthLabel = new System.Windows.Forms.Label();
             this.ImageHeight = new System.Windows.Forms.NumericUpDown();
             this.ImageWidth = new System.Windows.Forms.NumericUpDown();
+            this.SelectFontButton = new System.Windows.Forms.Button();
+            this.SelectFontLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.CardImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.XPosition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.YPosition)).BeginInit();
@@ -77,19 +78,14 @@ namespace PlayingCardMaker
             this.CardImage.TabIndex = 0;
             this.CardImage.TabStop = false;
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
-            // 
             // AddBackgroundButton
             // 
             this.AddBackgroundButton.AccessibleName = "";
             this.AddBackgroundButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddBackgroundButton.ForeColor = System.Drawing.Color.White;
-            this.AddBackgroundButton.Location = new System.Drawing.Point(17, 147);
+            this.AddBackgroundButton.Location = new System.Drawing.Point(0, 152);
             this.AddBackgroundButton.Name = "AddBackgroundButton";
-            this.AddBackgroundButton.Size = new System.Drawing.Size(75, 58);
+            this.AddBackgroundButton.Size = new System.Drawing.Size(99, 58);
             this.AddBackgroundButton.TabIndex = 1;
             this.AddBackgroundButton.Text = "Background";
             this.AddBackgroundButton.UseVisualStyleBackColor = true;
@@ -97,9 +93,11 @@ namespace PlayingCardMaker
             // 
             // BackgroundLabel
             // 
-            this.BackgroundLabel.Location = new System.Drawing.Point(101, 152);
+            this.BackgroundLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BackgroundLabel.ForeColor = System.Drawing.Color.White;
+            this.BackgroundLabel.Location = new System.Drawing.Point(105, 152);
             this.BackgroundLabel.Name = "BackgroundLabel";
-            this.BackgroundLabel.Size = new System.Drawing.Size(152, 48);
+            this.BackgroundLabel.Size = new System.Drawing.Size(152, 58);
             this.BackgroundLabel.TabIndex = 2;
             this.BackgroundLabel.Click += new System.EventHandler(this.BackgroundLabel_Click);
             // 
@@ -107,9 +105,9 @@ namespace PlayingCardMaker
             // 
             this.AddTextButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddTextButton.ForeColor = System.Drawing.Color.White;
-            this.AddTextButton.Location = new System.Drawing.Point(17, 229);
+            this.AddTextButton.Location = new System.Drawing.Point(0, 216);
             this.AddTextButton.Name = "AddTextButton";
-            this.AddTextButton.Size = new System.Drawing.Size(75, 41);
+            this.AddTextButton.Size = new System.Drawing.Size(99, 41);
             this.AddTextButton.TabIndex = 3;
             this.AddTextButton.Text = "Add Text";
             this.AddTextButton.UseVisualStyleBackColor = true;
@@ -119,9 +117,9 @@ namespace PlayingCardMaker
             // 
             this.AddImageButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddImageButton.ForeColor = System.Drawing.Color.White;
-            this.AddImageButton.Location = new System.Drawing.Point(99, 229);
+            this.AddImageButton.Location = new System.Drawing.Point(97, 216);
             this.AddImageButton.Name = "AddImageButton";
-            this.AddImageButton.Size = new System.Drawing.Size(75, 41);
+            this.AddImageButton.Size = new System.Drawing.Size(95, 41);
             this.AddImageButton.TabIndex = 4;
             this.AddImageButton.Text = "Add Image";
             this.AddImageButton.UseVisualStyleBackColor = true;
@@ -130,10 +128,11 @@ namespace PlayingCardMaker
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(694, 93);
+            this.label2.Location = new System.Drawing.Point(693, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
+            this.label2.Size = new System.Drawing.Size(100, 20);
             this.label2.TabIndex = 5;
             this.label2.Text = "Components";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -141,17 +140,19 @@ namespace PlayingCardMaker
             // ComponentList
             // 
             this.ComponentList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
+            this.ComponentList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ComponentList.ForeColor = System.Drawing.Color.White;
             this.ComponentList.FormattingEnabled = true;
-            this.ComponentList.Location = new System.Drawing.Point(697, 128);
+            this.ComponentList.ItemHeight = 20;
+            this.ComponentList.Location = new System.Drawing.Point(697, 102);
             this.ComponentList.Name = "ComponentList";
-            this.ComponentList.Size = new System.Drawing.Size(227, 459);
+            this.ComponentList.Size = new System.Drawing.Size(227, 484);
             this.ComponentList.TabIndex = 6;
             this.ComponentList.SelectedIndexChanged += new System.EventHandler(this.ComponentList_SelectedIndexChanged);
             // 
             // XPosition
             // 
-            this.XPosition.Location = new System.Drawing.Point(17, 380);
+            this.XPosition.Location = new System.Drawing.Point(5, 436);
             this.XPosition.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -164,7 +165,7 @@ namespace PlayingCardMaker
             // 
             // YPosition
             // 
-            this.YPosition.Location = new System.Drawing.Point(98, 380);
+            this.YPosition.Location = new System.Drawing.Point(86, 436);
             this.YPosition.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -179,7 +180,7 @@ namespace PlayingCardMaker
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(14, 364);
+            this.label3.Location = new System.Drawing.Point(2, 420);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 8;
@@ -189,7 +190,7 @@ namespace PlayingCardMaker
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(97, 364);
+            this.label4.Location = new System.Drawing.Point(85, 420);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 13);
             this.label4.TabIndex = 9;
@@ -197,7 +198,7 @@ namespace PlayingCardMaker
             // 
             // Size
             // 
-            this.Size.Location = new System.Drawing.Point(192, 380);
+            this.Size.Location = new System.Drawing.Point(180, 436);
             this.Size.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -212,7 +213,7 @@ namespace PlayingCardMaker
             // 
             this.SizeLabel.AutoSize = true;
             this.SizeLabel.ForeColor = System.Drawing.Color.White;
-            this.SizeLabel.Location = new System.Drawing.Point(189, 364);
+            this.SizeLabel.Location = new System.Drawing.Point(177, 420);
             this.SizeLabel.Name = "SizeLabel";
             this.SizeLabel.Size = new System.Drawing.Size(27, 13);
             this.SizeLabel.TabIndex = 11;
@@ -220,7 +221,7 @@ namespace PlayingCardMaker
             // 
             // NameInput
             // 
-            this.NameInput.Location = new System.Drawing.Point(17, 306);
+            this.NameInput.Location = new System.Drawing.Point(5, 367);
             this.NameInput.Name = "NameInput";
             this.NameInput.Size = new System.Drawing.Size(208, 20);
             this.NameInput.TabIndex = 12;
@@ -230,11 +231,12 @@ namespace PlayingCardMaker
             // 
             this.label6.AutoSize = true;
             this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(17, 290);
+            this.label6.Location = new System.Drawing.Point(2, 351);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 13;
             this.label6.Text = "Name";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // CSVButton
             // 
@@ -250,6 +252,7 @@ namespace PlayingCardMaker
             // 
             // CSVLabel
             // 
+            this.CSVLabel.ForeColor = System.Drawing.Color.White;
             this.CSVLabel.Location = new System.Drawing.Point(778, 590);
             this.CSVLabel.Name = "CSVLabel";
             this.CSVLabel.Size = new System.Drawing.Size(152, 38);
@@ -281,6 +284,7 @@ namespace PlayingCardMaker
             // CreateMessageLabel
             // 
             this.CreateMessageLabel.AutoSize = true;
+            this.CreateMessageLabel.ForeColor = System.Drawing.Color.White;
             this.CreateMessageLabel.Location = new System.Drawing.Point(778, 699);
             this.CreateMessageLabel.Name = "CreateMessageLabel";
             this.CreateMessageLabel.Size = new System.Drawing.Size(0, 13);
@@ -329,7 +333,7 @@ namespace PlayingCardMaker
             // 
             this.HeightLabel.AutoSize = true;
             this.HeightLabel.ForeColor = System.Drawing.Color.White;
-            this.HeightLabel.Location = new System.Drawing.Point(97, 434);
+            this.HeightLabel.Location = new System.Drawing.Point(85, 478);
             this.HeightLabel.Name = "HeightLabel";
             this.HeightLabel.Size = new System.Drawing.Size(38, 13);
             this.HeightLabel.TabIndex = 24;
@@ -339,7 +343,7 @@ namespace PlayingCardMaker
             // 
             this.WidthLabel.AutoSize = true;
             this.WidthLabel.ForeColor = System.Drawing.Color.White;
-            this.WidthLabel.Location = new System.Drawing.Point(14, 434);
+            this.WidthLabel.Location = new System.Drawing.Point(2, 478);
             this.WidthLabel.Name = "WidthLabel";
             this.WidthLabel.Size = new System.Drawing.Size(35, 13);
             this.WidthLabel.TabIndex = 23;
@@ -347,7 +351,7 @@ namespace PlayingCardMaker
             // 
             // ImageHeight
             // 
-            this.ImageHeight.Location = new System.Drawing.Point(98, 450);
+            this.ImageHeight.Location = new System.Drawing.Point(86, 494);
             this.ImageHeight.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -360,7 +364,7 @@ namespace PlayingCardMaker
             // 
             // ImageWidth
             // 
-            this.ImageWidth.Location = new System.Drawing.Point(17, 450);
+            this.ImageWidth.Location = new System.Drawing.Point(5, 494);
             this.ImageWidth.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -371,12 +375,35 @@ namespace PlayingCardMaker
             this.ImageWidth.TabIndex = 25;
             this.ImageWidth.ValueChanged += new System.EventHandler(this.ImageWidth_ValueChanged);
             // 
+            // SelectFontButton
+            // 
+            this.SelectFontButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SelectFontButton.ForeColor = System.Drawing.Color.White;
+            this.SelectFontButton.Location = new System.Drawing.Point(0, 263);
+            this.SelectFontButton.Name = "SelectFontButton";
+            this.SelectFontButton.Size = new System.Drawing.Size(99, 41);
+            this.SelectFontButton.TabIndex = 27;
+            this.SelectFontButton.Text = "Select Font";
+            this.SelectFontButton.UseVisualStyleBackColor = true;
+            this.SelectFontButton.Click += new System.EventHandler(this.SelectFontButton_Click);
+            // 
+            // SelectFontLabel
+            // 
+            this.SelectFontLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectFontLabel.ForeColor = System.Drawing.Color.White;
+            this.SelectFontLabel.Location = new System.Drawing.Point(105, 276);
+            this.SelectFontLabel.Name = "SelectFontLabel";
+            this.SelectFontLabel.Size = new System.Drawing.Size(152, 28);
+            this.SelectFontLabel.TabIndex = 28;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
             this.ClientSize = new System.Drawing.Size(969, 727);
+            this.Controls.Add(this.SelectFontLabel);
+            this.Controls.Add(this.SelectFontButton);
             this.Controls.Add(this.ImageHeight);
             this.Controls.Add(this.ImageWidth);
             this.Controls.Add(this.HeightLabel);
@@ -422,7 +449,6 @@ namespace PlayingCardMaker
         #endregion
 
         private System.Windows.Forms.PictureBox CardImage;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button AddBackgroundButton;
         private System.Windows.Forms.Label BackgroundLabel;
         private System.Windows.Forms.Button AddTextButton;
@@ -449,6 +475,8 @@ namespace PlayingCardMaker
         private System.Windows.Forms.Label WidthLabel;
         private System.Windows.Forms.NumericUpDown ImageHeight;
         private System.Windows.Forms.NumericUpDown ImageWidth;
+        private System.Windows.Forms.Button SelectFontButton;
+        private System.Windows.Forms.Label SelectFontLabel;
     }
 }
 

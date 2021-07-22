@@ -1,18 +1,13 @@
-﻿using System;
+﻿using CsvHelper;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
 using System.Globalization;
-
-using CsvHelper;
-using CsvHelper.Configuration;
-using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PlayingCardMaker
 {
@@ -86,11 +81,14 @@ namespace PlayingCardMaker
                     ImageWidth.Visible = false;
                     HeightLabel.Visible = false;
                     ImageHeight.Visible = false;
+                    SelectFontButton.Visible = true;
+                    SelectFontLabel.Visible = true;
                     Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
                     XPosition.Value = selectedLabel.Location.X;
                     YPosition.Value = selectedLabel.Location.Y;
                     Size.Value = (decimal)selectedLabel.Font.Size;
                     NameInput.Text = selectedLabel.Text;
+                    SelectFontLabel.Text = selectedLabel.Font.Name;
                 }
                 else
                 {
@@ -100,6 +98,8 @@ namespace PlayingCardMaker
                     ImageWidth.Visible = true;
                     HeightLabel.Visible = true;
                     ImageHeight.Visible = true;
+                    SelectFontButton.Visible = false;
+                    SelectFontLabel.Visible = false;
                     PictureBox selectedPicture = imageComponents[ComponentList.SelectedIndex].image;
                     XPosition.Value = selectedPicture.Location.X;
                     YPosition.Value = selectedPicture.Location.Y;
@@ -301,7 +301,7 @@ namespace PlayingCardMaker
                                                     float relY = component.label.Location.Y * factor;
                                                     Console.WriteLine(relY);
 
-                                                    System.Drawing.Font stringFont = new System.Drawing.Font("Arial", component.label.Font.Size * factor);
+                                                    System.Drawing.Font stringFont = new System.Drawing.Font(component.label.Font.Name, component.label.Font.Size * factor, component.label.Font.Style, component.label.Font.Unit);
                                                     g.DrawString((string)dataTable.Rows[i][headerIndex], stringFont, stringBrush, relX, relY);
                                                 }
                                             }
@@ -419,7 +419,8 @@ namespace PlayingCardMaker
                                 X = component.label.Location.X,
                                 Y = component.label.Location.Y,
                                 Size = component.label.Font.Size,
-                                Text = component.label.Text
+                                Text = component.label.Text,
+                                FontName = component.label.Font.Name
                             };
 
                             labelList.Add(serLabel);
@@ -482,7 +483,7 @@ namespace PlayingCardMaker
                         newText.BackColor = Color.Transparent;
                         newText.Location = new Point(serLabel.X, serLabel.Y);
                         newText.Text = serLabel.Text;
-                        Font newFont = new Font(newText.Font.FontFamily, (float)serLabel.Size, newText.Font.Style);
+                        Font newFont = new Font(serLabel.FontName, (float)serLabel.Size);
                         newText.Font = newFont;
                         CardImage.Controls.Add(newText);
                         Component newComponent = new Component()
@@ -564,6 +565,30 @@ namespace PlayingCardMaker
             ComponentList.Items.Add(newPictureComponent.image.Name);
             ComponentList.SelectedIndex = ComponentList.Items.Count - 1;
         }
+
+        private void SelectFontButton_Click(object sender, EventArgs e)
+        { 
+            using (FontDialog fontDialog = new FontDialog())
+            {
+                fontDialog.ShowColor = false;
+                fontDialog.ShowEffects = false;
+                fontDialog.ShowHelp = false;
+                fontDialog.MaxSize = (int)imageComponents[ComponentList.SelectedIndex].label.Font.Size;
+                fontDialog.MinSize = (int)imageComponents[ComponentList.SelectedIndex].label.Font.Size;
+                fontDialog.Font = imageComponents[ComponentList.SelectedIndex].label.Font;
+
+                if (fontDialog.ShowDialog() == DialogResult.OK)
+                {
+                    imageComponents[ComponentList.SelectedIndex].label.Font = fontDialog.Font;
+                    SelectFontLabel.Text = fontDialog.Font.Name;
+                }
+            }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     class Save
@@ -580,6 +605,7 @@ namespace PlayingCardMaker
         public int Y;
         public string Text;
         public float Size;
+        public string FontName;
     }
 
     class SerImage
