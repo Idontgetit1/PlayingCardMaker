@@ -20,6 +20,7 @@ namespace PlayingCardMaker
     {
         private string filePath = string.Empty;
         private List<Component> imageComponents = new List<Component>{};
+        private Font defaultFont = DefaultFont;
 
         public Form1()
         {
@@ -263,65 +264,78 @@ namespace PlayingCardMaker
 
                     for (int i = 0; i < dataTable.Rows.Count; i++)
                     {
-                        Bitmap imgLoad = (Bitmap)Image.FromFile(BackgroundLabel.Text);
-                        Image img = Indexed2Image(imgLoad, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                        using (Graphics g = Graphics.FromImage(img))
+                        int amount = 1;
+                        for (int j = 0; j < headers.Count; j++)
                         {
-                            for (int headerIndex = 0; headerIndex < headers.Count; headerIndex++)
+                            if (headers[j] == "amount")
                             {
-                                foreach (Component component in imageComponents)
-                                {
-                                    if (component.isText)
-                                    {
-                                        //if Component is Text
-                                        if (component.label.Text == headers[headerIndex])
-                                        {
-                                            //if Label hast CSV Header simmilarities
-                                            if ((string)dataTable.Rows[i][headerIndex] != "")
-                                            {
-                                                //if text is not empty
-                                                SolidBrush stringBrush = new SolidBrush(System.Drawing.Color.Black);
-                                                float factor = (float)img.Width / CardImage.Width;
-                                                Console.WriteLine("Image Size Factor: " + img.Width + " / " + CardImage.Width + ": " + factor);
-                                                float relX = component.label.Location.X * factor;
-                                                Console.WriteLine(relX);
-                                                float relY = component.label.Location.Y * factor;
-                                                Console.WriteLine(relY);
+                                string amountS = (string)dataTable.Rows[i][j];
+                                amount = Int32.Parse(amountS);
+                            }
+                        }
 
-                                                System.Drawing.Font stringFont = new System.Drawing.Font("Arial", component.label.Font.Size * factor);
-                                                g.DrawString((string)dataTable.Rows[i][headerIndex], stringFont, stringBrush, relX, relY);
+                        for (int repet = 0; repet < amount; repet++)
+                        {
+                            Bitmap imgLoad = (Bitmap)Image.FromFile(BackgroundLabel.Text);
+                            Image img = Indexed2Image(imgLoad, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            using (Graphics g = Graphics.FromImage(img))
+                            {
+                                for (int headerIndex = 0; headerIndex < headers.Count; headerIndex++)
+                                {
+                                    foreach (Component component in imageComponents)
+                                    {
+                                        if (component.isText)
+                                        {
+                                            //if Component is Text
+                                            if (component.label.Text == headers[headerIndex])
+                                            {
+                                                //if Label hast CSV Header simmilarities
+                                                if ((string)dataTable.Rows[i][headerIndex] != "")
+                                                {
+                                                    //if text is not empty
+                                                    SolidBrush stringBrush = new SolidBrush(System.Drawing.Color.Black);
+                                                    float factor = (float)img.Width / CardImage.Width;
+                                                    Console.WriteLine("Image Size Factor: " + img.Width + " / " + CardImage.Width + ": " + factor);
+                                                    float relX = component.label.Location.X * factor;
+                                                    Console.WriteLine(relX);
+                                                    float relY = component.label.Location.Y * factor;
+                                                    Console.WriteLine(relY);
+
+                                                    System.Drawing.Font stringFont = new System.Drawing.Font("Arial", component.label.Font.Size * factor);
+                                                    g.DrawString((string)dataTable.Rows[i][headerIndex], stringFont, stringBrush, relX, relY);
+                                                }
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        //if Component is Image
-                                        if (component.image.Name == headers[headerIndex])
+                                        else
                                         {
-                                            //if Image is in headers / in CSV File
-                                            if ((string)dataTable.Rows[i][headerIndex] != "")
+                                            //if Component is Image
+                                            if (component.image.Name == headers[headerIndex])
                                             {
-                                                //if path is not empty
-                                                float factorWidth = (float)img.Width / CardImage.Width;
-                                                float factorHeight = (float)img.Width / CardImage.Width;
-                                                float relX = component.image.Location.X * factorWidth;
-                                                float relY = component.image.Location.Y * factorHeight;
-                                                float relWidth = component.image.Width * factorWidth;
-                                                float relHeight = component.image.Height * factorHeight;
+                                                //if Image is in headers / in CSV File
+                                                if ((string)dataTable.Rows[i][headerIndex] != "")
+                                                {
+                                                    //if path is not empty
+                                                    float factorWidth = (float)img.Width / CardImage.Width;
+                                                    float factorHeight = (float)img.Width / CardImage.Width;
+                                                    float relX = component.image.Location.X * factorWidth;
+                                                    float relY = component.image.Location.Y * factorHeight;
+                                                    float relWidth = component.image.Width * factorWidth;
+                                                    float relHeight = component.image.Height * factorHeight;
 
-                                                //get Image from DataTable
-                                                string imagePath = (string)dataTable.Rows[i][headerIndex];
-                                                Image tempImg = Image.FromFile(imagePath);
+                                                    //get Image from DataTable
+                                                    string imagePath = (string)dataTable.Rows[i][headerIndex];
+                                                    Image tempImg = Image.FromFile(imagePath);
 
-                                                g.DrawImage(tempImg, relX, relY, relWidth, relHeight);
+                                                    g.DrawImage(tempImg, relX, relY, relWidth, relHeight);
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            imgList.Add(img);
+                            //img.Save("IMG" + i + ".png");
                         }
-                        imgList.Add(img);
-                        //img.Save("IMG" + i + ".png");
                     }
 
                     //if seperate Files is checked
@@ -341,9 +355,9 @@ namespace PlayingCardMaker
                         using (Graphics g = Graphics.FromImage(GridImage))
                         {
                             int ImageCount = 0;
-                            for (int x = 0; x < GridSize; x++)
+                            for (int y = 0; y < GridSize; y++)
                             {
-                                for (int y = 0; y < GridSize; y++)
+                                for (int x = 0; x < GridSize; x++)
                                 {
                                     if (ImageCount >= imgList.Count)
                                     {
@@ -358,7 +372,7 @@ namespace PlayingCardMaker
                         }
                         GridImage.Save(filePath);
                     }
-
+                    CreateMessageLabel.Text = "DONE !";
                 }
             }
         }
@@ -511,11 +525,6 @@ namespace PlayingCardMaker
 
         }
 
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
         private void ImageWidth_ValueChanged(object sender, EventArgs e)
         {
             //Get currently Selected Element
@@ -537,6 +546,8 @@ namespace PlayingCardMaker
             {
                 g.FillRectangle(
                     Brushes.White, 0, 0, boxImage.Width, boxImage.Height);
+
+                g.DrawString("New Image", defaultFont, Brushes.Black, 15f, 15f);
             }
             PictureBox newPictureBox = new PictureBox();
             newPictureBox.Height = 50;

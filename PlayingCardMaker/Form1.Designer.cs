@@ -29,6 +29,7 @@ namespace PlayingCardMaker
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.CardImage = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.AddBackgroundButton = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@ namespace PlayingCardMaker
             this.CreateMessageLabel = new System.Windows.Forms.Label();
             this.SaveButton = new System.Windows.Forms.Button();
             this.LoadButton = new System.Windows.Forms.Button();
-            this.CloseButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.HeightLabel = new System.Windows.Forms.Label();
             this.WidthLabel = new System.Windows.Forms.Label();
@@ -314,19 +314,6 @@ namespace PlayingCardMaker
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
             // 
-            // CloseButton
-            // 
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CloseButton.ForeColor = System.Drawing.Color.White;
-            this.CloseButton.Location = new System.Drawing.Point(1180, 673);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(50, 50);
-            this.CloseButton.TabIndex = 21;
-            this.CloseButton.Text = "X";
-            this.CloseButton.UseVisualStyleBackColor = true;
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(30)))), ((int)(((byte)(54)))));
@@ -335,7 +322,7 @@ namespace PlayingCardMaker
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1242, 53);
+            this.panel1.Size = new System.Drawing.Size(969, 53);
             this.panel1.TabIndex = 22;
             // 
             // HeightLabel
@@ -389,8 +376,7 @@ namespace PlayingCardMaker
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(51)))), ((int)(((byte)(73)))));
-            this.ClientSize = new System.Drawing.Size(1242, 727);
-            this.Controls.Add(this.CloseButton);
+            this.ClientSize = new System.Drawing.Size(969, 727);
             this.Controls.Add(this.ImageHeight);
             this.Controls.Add(this.ImageWidth);
             this.Controls.Add(this.HeightLabel);
@@ -416,6 +402,7 @@ namespace PlayingCardMaker
             this.Controls.Add(this.BackgroundLabel);
             this.Controls.Add(this.AddBackgroundButton);
             this.Controls.Add(this.CardImage);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Playing Card Maker";
@@ -457,7 +444,6 @@ namespace PlayingCardMaker
         private System.Windows.Forms.Label CreateMessageLabel;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button LoadButton;
-        private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label HeightLabel;
         private System.Windows.Forms.Label WidthLabel;
