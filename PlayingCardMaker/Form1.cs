@@ -19,7 +19,7 @@ namespace PlayingCardMaker
     public partial class Form1 : Form
     {
         private string filePath = string.Empty;
-        private List<Label> imageTexts = new List<Label>{};
+        private List<Component> imageComponents = new List<Component>{};
 
         public Form1()
         {
@@ -61,9 +61,14 @@ namespace PlayingCardMaker
             newText.AutoSize = true;
             newText.BackColor = Color.Transparent;
             newText.Location = new Point(15, 15);
-            newText.Text = "Test";
+            newText.Text = "New Text";
             CardImage.Controls.Add(newText);
-            imageTexts.Add(newText);
+            Component newLabelComponent = new Component()
+            {
+                isText = true,
+                label = newText
+            };
+            imageComponents.Add(newLabelComponent);
             ComponentList.Items.Add(newText.Text);
             ComponentList.SelectedIndex = ComponentList.Items.Count - 1;
         }
@@ -72,42 +77,94 @@ namespace PlayingCardMaker
         {
             if (!NameInput.Focused)
             {
-                Label selectedLabel = imageTexts[ComponentList.SelectedIndex];
-                XPosition.Value = selectedLabel.Location.X;
-                YPosition.Value = selectedLabel.Location.Y;
-                Size.Value = (decimal)selectedLabel.Font.Size;
-                NameInput.Text = selectedLabel.Text;
+                if (imageComponents[ComponentList.SelectedIndex].isText)
+                {
+                    Size.Visible = true;
+                    SizeLabel.Visible = true;
+                    WidthLabel.Visible = false;
+                    ImageWidth.Visible = false;
+                    HeightLabel.Visible = false;
+                    ImageHeight.Visible = false;
+                    Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
+                    XPosition.Value = selectedLabel.Location.X;
+                    YPosition.Value = selectedLabel.Location.Y;
+                    Size.Value = (decimal)selectedLabel.Font.Size;
+                    NameInput.Text = selectedLabel.Text;
+                }
+                else
+                {
+                    Size.Visible = false;
+                    SizeLabel.Visible = false;
+                    WidthLabel.Visible = true;
+                    ImageWidth.Visible = true;
+                    HeightLabel.Visible = true;
+                    ImageHeight.Visible = true;
+                    PictureBox selectedPicture = imageComponents[ComponentList.SelectedIndex].image;
+                    XPosition.Value = selectedPicture.Location.X;
+                    YPosition.Value = selectedPicture.Location.Y;
+                    NameInput.Text = selectedPicture.Name;
+                    ImageWidth.Value = selectedPicture.Width;
+                    ImageHeight.Value = selectedPicture.Height;
+                }
             }
         }
 
         private void XPosition_ValueChanged(object sender, EventArgs e)
         {
             //Get currently Selected Element
-            Label selectedLabel = imageTexts[ComponentList.SelectedIndex];
-            selectedLabel.Location = new Point((int)XPosition.Value, selectedLabel.Location.Y);
+            if (imageComponents[ComponentList.SelectedIndex].isText)
+            {
+                Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
+                selectedLabel.Location = new Point((int)XPosition.Value, selectedLabel.Location.Y);
+            }
+            else
+            {
+                PictureBox selectedPicture = imageComponents[ComponentList.SelectedIndex].image;
+                selectedPicture.Location = new Point((int)XPosition.Value, selectedPicture.Location.Y);
+            }
         }
 
         private void Size_ValueChanged(object sender, EventArgs e)
         {
             //Get currently Selected Element
-            Label selectedLabel = imageTexts[ComponentList.SelectedIndex];
-            Font newFont = new Font(selectedLabel.Font.FontFamily, (float)Size.Value, selectedLabel.Font.Style);
-            selectedLabel.Font = newFont;
+            if (imageComponents[ComponentList.SelectedIndex].isText)
+            {
+                Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
+                Font newFont = new Font(selectedLabel.Font.FontFamily, (float)Size.Value, selectedLabel.Font.Style);
+                selectedLabel.Font = newFont;
+            }
         }
 
         private void YPosition_ValueChanged(object sender, EventArgs e)
         {
             //Get currently Selected Element
-            Label selectedLabel = imageTexts[ComponentList.SelectedIndex];
-            selectedLabel.Location = new Point(selectedLabel.Location.X, (int)YPosition.Value);
+            if (imageComponents[ComponentList.SelectedIndex].isText)
+            {
+                Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
+                selectedLabel.Location = new Point(selectedLabel.Location.X, (int)YPosition.Value);
+            }
+            else
+            {
+                PictureBox selectedPicture = imageComponents[ComponentList.SelectedIndex].image;
+                selectedPicture.Location = new Point(selectedPicture.Location.X, (int)YPosition.Value);
+            }
         }
 
         private void NameInput_TextChanged(object sender, EventArgs e)
         {
             //Get currently Selected Element
-            Label selectedLabel = imageTexts[ComponentList.SelectedIndex];
-            selectedLabel.Text = NameInput.Text;
-            ComponentList.Items[ComponentList.SelectedIndex] = selectedLabel.Text;
+            if (imageComponents[ComponentList.SelectedIndex].isText)
+            {
+                Label selectedLabel = imageComponents[ComponentList.SelectedIndex].label;
+                selectedLabel.Text = NameInput.Text;
+                ComponentList.Items[ComponentList.SelectedIndex] = selectedLabel.Text;
+            }
+            else
+            {
+                PictureBox selectedPicture = imageComponents[ComponentList.SelectedIndex].image;
+                selectedPicture.Name = NameInput.Text;
+                ComponentList.Items[ComponentList.SelectedIndex] = selectedPicture.Name;
+            }
         }
 
         private void BackgroundLabel_Click(object sender, EventArgs e)
@@ -132,7 +189,7 @@ namespace PlayingCardMaker
             {
                 CreateMessageLabel.Text = "No Background Image";
             }
-            else if (imageTexts.Count <= 0)
+            else if (imageComponents.Count <= 0)
             {
                 CreateMessageLabel.Text = "No Components Created";
             }
@@ -212,22 +269,53 @@ namespace PlayingCardMaker
                         {
                             for (int headerIndex = 0; headerIndex < headers.Count; headerIndex++)
                             {
-                                foreach (Label label in imageTexts)
+                                foreach (Component component in imageComponents)
                                 {
-                                    if (label.Text == headers[headerIndex])
+                                    if (component.isText)
                                     {
+                                        //if Component is Text
+                                        if (component.label.Text == headers[headerIndex])
+                                        {
+                                            //if Label hast CSV Header simmilarities
+                                            if ((string)dataTable.Rows[i][headerIndex] != "")
+                                            {
+                                                //if text is not empty
+                                                SolidBrush stringBrush = new SolidBrush(System.Drawing.Color.Black);
+                                                float factor = (float)img.Width / CardImage.Width;
+                                                Console.WriteLine("Image Size Factor: " + img.Width + " / " + CardImage.Width + ": " + factor);
+                                                float relX = component.label.Location.X * factor;
+                                                Console.WriteLine(relX);
+                                                float relY = component.label.Location.Y * factor;
+                                                Console.WriteLine(relY);
 
-                                        
-                                        SolidBrush stringBrush = new SolidBrush(System.Drawing.Color.Black);
-                                        float factor = (float)img.Width / CardImage.Width;
-                                        Console.WriteLine("Image Size Factor: " + img.Width + " / " + CardImage.Width + ": " + factor);
-                                        float relX = label.Location.X * factor;
-                                        Console.WriteLine(relX);
-                                        float relY = label.Location.Y * factor;
-                                        Console.WriteLine(relY);
-                                        
-                                        System.Drawing.Font stringFont = new System.Drawing.Font("Arial", label.Font.Size * factor);
-                                        g.DrawString((string)dataTable.Rows[i][headerIndex], stringFont, stringBrush, relX, relY);
+                                                System.Drawing.Font stringFont = new System.Drawing.Font("Arial", component.label.Font.Size * factor);
+                                                g.DrawString((string)dataTable.Rows[i][headerIndex], stringFont, stringBrush, relX, relY);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //if Component is Image
+                                        if (component.image.Name == headers[headerIndex])
+                                        {
+                                            //if Image is in headers / in CSV File
+                                            if ((string)dataTable.Rows[i][headerIndex] != "")
+                                            {
+                                                //if path is not empty
+                                                float factorWidth = (float)img.Width / CardImage.Width;
+                                                float factorHeight = (float)img.Width / CardImage.Width;
+                                                float relX = component.image.Location.X * factorWidth;
+                                                float relY = component.image.Location.Y * factorHeight;
+                                                float relWidth = component.image.Width * factorWidth;
+                                                float relHeight = component.image.Height * factorHeight;
+
+                                                //get Image from DataTable
+                                                string imagePath = (string)dataTable.Rows[i][headerIndex];
+                                                Image tempImg = Image.FromFile(imagePath);
+
+                                                g.DrawImage(tempImg, relX, relY, relWidth, relHeight);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -306,23 +394,41 @@ namespace PlayingCardMaker
                     filePath = saveFileDialog.FileName;
 
                     List<SerLabel> labelList = new List<SerLabel>();
+                    List<SerImage> imageList = new List<SerImage>();
 
-                    foreach (Label label in imageTexts)
+                    foreach (Component component in imageComponents)
                     {
-                        SerLabel serLabel = new SerLabel()
+                        if (component.isText)
                         {
-                            X = label.Location.X,
-                            Y = label.Location.Y,
-                            Size = label.Font.Size,
-                            Text = label.Text
-                        };
+                            SerLabel serLabel = new SerLabel()
+                            {
+                                X = component.label.Location.X,
+                                Y = component.label.Location.Y,
+                                Size = component.label.Font.Size,
+                                Text = component.label.Text
+                            };
 
-                        labelList.Add(serLabel);
+                            labelList.Add(serLabel);
+                        }
+                        else
+                        {
+                            SerImage serImage = new SerImage()
+                            {
+                                X = component.image.Location.X,
+                                Y = component.image.Location.Y,
+                                SizeX = component.image.Width,
+                                SizeY = component.image.Height,
+                                Name = component.image.Name
+                            };
+
+                            imageList.Add(serImage);
+                        }
                     }
 
                     Save save = new Save()
                     {
                         labels = labelList,
+                        images = imageList,
                         Background = BackgroundLabel.Text,
                         CSVFile = CSVLabel.Text
                     };
@@ -365,18 +471,94 @@ namespace PlayingCardMaker
                         Font newFont = new Font(newText.Font.FontFamily, (float)serLabel.Size, newText.Font.Style);
                         newText.Font = newFont;
                         CardImage.Controls.Add(newText);
-                        imageTexts.Add(newText);
+                        Component newComponent = new Component()
+                        {
+                            isText = true,
+                            label = newText
+                        };
+                        imageComponents.Add(newComponent);
                         ComponentList.Items.Add(newText.Text);
+                    }
+
+                    foreach (SerImage serImage in load.images)
+                    {
+                        PictureBox newPictureBox = new PictureBox();
+                        newPictureBox.Location = new Point(serImage.X, serImage.Y);
+                        newPictureBox.Name = serImage.Name;
+                        newPictureBox.Width = serImage.SizeX;
+                        newPictureBox.Height = serImage.SizeY;
+                        CardImage.Controls.Add(newPictureBox);
+                        Component newComponent = new Component()
+                        {
+                            isText = false,
+                            image = newPictureBox
+                        };
+                        imageComponents.Add(newComponent);
+                        ComponentList.Items.Add(newPictureBox.Name);
+                    }
+
+                    if (ComponentList.Items.Count > 0)
+                    {
+                        ComponentList.SelectedIndex = 0;
                     }
                 }
             }
             
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void ImageWidth_ValueChanged(object sender, EventArgs e)
+        {
+            //Get currently Selected Element
+            PictureBox selectedPictureBox = imageComponents[ComponentList.SelectedIndex].image;
+            selectedPictureBox.Width = (int)ImageWidth.Value;
+        }
+
+        private void ImageHeight_ValueChanged(object sender, EventArgs e)
+        {
+            //Get currently Selected Element
+            PictureBox selectedPictureBox = imageComponents[ComponentList.SelectedIndex].image;
+            selectedPictureBox.Height = (int)ImageHeight.Value;
+        }
+
+        private void AddImageButton_Click(object sender, EventArgs e)
+        {
+            Image boxImage = new Bitmap(1000, 1000, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            using (Graphics g = Graphics.FromImage(boxImage))
+            {
+                g.FillRectangle(
+                    Brushes.White, 0, 0, boxImage.Width, boxImage.Height);
+            }
+            PictureBox newPictureBox = new PictureBox();
+            newPictureBox.Height = 50;
+            newPictureBox.Width = 50;
+            newPictureBox.Location = new Point(15, 15);
+            newPictureBox.Name = "New Image";
+            CardImage.Controls.Add(newPictureBox);
+            Component newPictureComponent = new Component()
+            {
+                isText = false,
+                image = newPictureBox
+            };
+            imageComponents.Add(newPictureComponent);
+            ComponentList.Items.Add(newPictureComponent.image.Name);
+            ComponentList.SelectedIndex = ComponentList.Items.Count - 1;
         }
     }
 
     class Save
     {
         public List<SerLabel> labels;
+        public List<SerImage> images;
         public string Background;
         public string CSVFile;
     }
@@ -387,5 +569,21 @@ namespace PlayingCardMaker
         public int Y;
         public string Text;
         public float Size;
+    }
+
+    class SerImage
+    {
+        public int X;
+        public int Y;
+        public string Name;
+        public int SizeX;
+        public int SizeY;
+    }
+
+    class Component
+    {
+        public bool isText;
+        public Label label;
+        public PictureBox image;
     }
 }
